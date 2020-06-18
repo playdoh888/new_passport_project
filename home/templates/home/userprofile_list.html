@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+{% block UserProfile %}
+    <li class="nav-item has-treeview">
+        <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-table"></i>
+            <p>
+                Users
+                <i class="fas fa-angle-left right"></i>
+            </p>
+        </a>
+        {% if perms.home.add_userprofile %}
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href={% url 'home:register' %} class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Add New User</p>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+        {% if perms.home.can_list_userprofiles %}
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href={% url 'home:list_userprofiles' %} class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>List/Search Users</p>
+                    </a>
+                </li>
+            </ul>
+        {% endif %}
+    </li>
+{% endblock %}
+
+{% block content %}
+    <h1>User List</h1>
+    {% if userprofile_list %}
+        <ul>
+            {% for userprofile in userprofile_list %}
+                <li>
+                    <a href="{{ userprofile.get_absolute_url }}">
+                        {{ userprofile.user }}
+                    </a>
+                    ({{ userprofile.role }})({{ userprofile.avtech_department }})
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no users in the system.</p>
+    {% endif %}
+{% endblock %}
